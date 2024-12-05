@@ -75,4 +75,15 @@ public class CategoryServiceImpl implements CategoryService {
         List<Category> list = categoryMapper.list(type);
         return list;
     }
+
+    @Override
+    public void update(CategoryDTO categoryDTO) {
+        Category category = new Category();
+        BeanUtils.copyProperties(categoryDTO, category);
+        // 更新事件，更新操作用户id
+        category.setUpdateTime(LocalDateTime.now());
+        category.setUpdateUser(BaseContext.getCurrentId());
+
+        categoryMapper.update(category);
+    }
 }

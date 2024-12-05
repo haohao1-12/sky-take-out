@@ -64,6 +64,12 @@ public class CategoryController {
         return Result.success();
     }
 
+    /**
+     * 启用禁用分类
+     * @param status
+     * @param id
+     * @return
+     */
     @PostMapping("/status/{status}")
     @ApiOperation("启用禁用分类")
     public Result startOrstop(@PathVariable Integer status, Long id) {
@@ -72,11 +78,29 @@ public class CategoryController {
         return Result.success();
     }
 
+    /**
+     * 根据类型查询分类
+     * @param type
+     * @return
+     */
     @GetMapping("/list")
     @ApiOperation("根据类型查询分类")
     public Result<List<Category>> list(Integer type) {
         log.info("根据类型查询分类 {}", type);
         List<Category> list = categoryService.list(type);
         return Result.success(list);
+    }
+
+    /**
+     * 修改分类
+     * @param categoryDTO
+     * @return
+     */
+    @PutMapping
+    @ApiOperation("修改分类")
+    public Result update(@RequestBody CategoryDTO categoryDTO) {
+        log.info("修改分类 {}", categoryDTO);
+        categoryService.update(categoryDTO);
+        return Result.success();
     }
 }
