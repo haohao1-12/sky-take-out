@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.imageio.event.IIOReadUpdateListener;
+
 @RestController
 @RequestMapping("/admin/category")
 @Slf4j
@@ -45,5 +47,18 @@ public class CategoryController {
         log.info("分类分页查询，参数为:{}", categoryPageQueryDTO);
         PageResult pageResult = categoryService.pageQuery(categoryPageQueryDTO);
         return Result.success(pageResult);
+    }
+
+    /**
+     * 删除分类
+     * @param id
+     * @return
+     */
+    @DeleteMapping
+    @ApiOperation("根据id删除分类")
+    public Result deleteById(Long id) {
+        log.info("删除 id:{} 的员工", id);
+        categoryService.deleteById(id);
+        return Result.success();
     }
 }
