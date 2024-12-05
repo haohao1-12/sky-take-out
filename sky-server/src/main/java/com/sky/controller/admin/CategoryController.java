@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.imageio.event.IIOReadUpdateListener;
 
 @RestController
 @RequestMapping("/admin/category")
@@ -59,6 +58,14 @@ public class CategoryController {
     public Result deleteById(Long id) {
         log.info("删除 id:{} 的员工", id);
         categoryService.deleteById(id);
+        return Result.success();
+    }
+
+    @PostMapping("/status/{status}")
+    @ApiOperation("启用禁用分类")
+    public Result startOrstop(@PathVariable Integer status, Long id) {
+        log.info("启用禁用分类： {}, {}", status, id);
+        categoryService.startOrStop(status, id);
         return Result.success();
     }
 }

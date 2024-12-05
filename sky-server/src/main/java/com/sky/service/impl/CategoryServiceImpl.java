@@ -62,4 +62,11 @@ public class CategoryServiceImpl implements CategoryService {
     public void deleteById(Long id) {
         categoryMapper.delete(id);
     }
+
+    @Override
+    public void startOrStop(Integer status, Long id) {
+        Category category = Category.builder().id(id).status(status).build();
+
+        categoryMapper.update(category);
+    }
 }
