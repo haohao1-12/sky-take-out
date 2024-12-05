@@ -4,7 +4,7 @@
 <mapper namespace="com.sky.mapper.CategoryMapper">
 
     <select id="pageQuery" resultType="com.sky.entity.Category">
-        select * from sky_take_out.category
+        select * from category
         <where>
             <if test="name != null and name != ''">
                 and name like concat('%', #{name}, '%')
@@ -13,8 +13,9 @@
                 and type = #{type}
             </if>
         </where>
-        order by sort asc, create_time desc
+        order by sort asc , create_time desc
     </select>
+
 
     <update id="update">
         update category
@@ -28,4 +29,13 @@
         </set>
         where id = #{id}
     </update>
+
+    <select id="list" resultType="com.sky.entity.Category">
+        select * from sky_take_out.category
+        where status = 1
+        <if test="type != null">
+            and type = #{type}
+        </if>
+        order by sort asc,create_time desc
+    </select>
 </mapper>
