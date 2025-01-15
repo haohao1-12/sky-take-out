@@ -1,11 +1,13 @@
 package com.sky.service.impl;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.sky.context.BaseContext;
 import com.sky.entity.AddressBook;
 import com.sky.mapper.AddressBookMapper;
 import com.sky.service.AddressBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -43,8 +45,13 @@ public class AddressBookServiceImpl implements AddressBookService {
         return addressBookMapper.list(addressBook).get(0);
     }
 
-    @Override
+    @Transactional
     public void setDefault(AddressBook addressBook) {
+        // 将当前用户的所有地址设置为非默认地址
+        addressBook.setIsDefault(0);
+        addressBook.setUserId(BaseContext.getCurrentId());
+        addressBookMapper.updateIsDefaultByUserId(addressBook);
+        // 将当前地址设置为默认地址
         addressBook.setIsDefault(1);
         addressBookMapper.update(addressBook);
     }

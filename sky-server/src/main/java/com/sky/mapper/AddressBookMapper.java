@@ -30,4 +30,7 @@ public interface AddressBookMapper {
 
     @Delete("delete from address_book where id = #{id}")
     void deleteById(Long id);
+
+    @Update("update address_book set is_default = 0 where user_id = #{userId}")
+    void updateIsDefaultByUserId(AddressBook addressBook);
 }
