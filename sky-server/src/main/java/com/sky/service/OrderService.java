@@ -50,5 +50,5 @@ public interface OrderService {
      * 取消订单
      * @param id
      */
-    void cancel(Long id);
+    void cancel(Long id) throws Exception;
 }
