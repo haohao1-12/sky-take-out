@@ -225,7 +225,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void cancel(Long id) throws Exception {
+    public void userCancelById(Long id) throws Exception {
         // 根据id查询订单
         Orders ordersDB = orderMapper.getById(id);
 
@@ -362,6 +362,33 @@ public class OrderServiceImpl implements OrderService {
                 .cancelTime(LocalDateTime.now())
                 .build();
 
+        orderMapper.update(orders);
+    }
+
+    @Override
+    public void cancel(OrdersCancelDTO ordersCancelDTO) {
+        // 根据id查询订单
+        Orders ordersDB = orderMapper.getById(ordersCancelDTO.getId());
+
+        // 支付状态
+        /*Integer payStatus = ordersDB.getPayStatus();
+        if (payStatus == Orders.PAID) {
+            // 用户已支付，需要退款
+            String refund = weChatPayUtil.refund(
+                    ordersDB.getNumber(), //商户订单号
+                    ordersDB.getNumber(), //商户退款单号
+                    new BigDecimal(0.01), //退款金额，单位 元
+                    new BigDecimal(0.01));
+            log.info("申请退款： {}", refund);
+        }*/
+
+        // 管理端取消订单需要退款，根据订单id更新订单状态，取消原因，取消时间
+        Orders orders = Orders.builder()
+                .id(ordersCancelDTO.getId())
+                .status(Orders.CANCELLED)
+                .cancelReason(ordersCancelDTO.getCancelReason())
+                .cancelTime(LocalDateTime.now())
+                .build();
         orderMapper.update(orders);
     }
 
