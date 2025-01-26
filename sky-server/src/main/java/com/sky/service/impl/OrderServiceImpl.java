@@ -21,7 +21,6 @@ import com.sky.vo.OrderVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -389,6 +388,24 @@ public class OrderServiceImpl implements OrderService {
                 .cancelReason(ordersCancelDTO.getCancelReason())
                 .cancelTime(LocalDateTime.now())
                 .build();
+        orderMapper.update(orders);
+    }
+
+    @Override
+    public void delivery(Long id) {
+        // 根据id查询订单
+        Orders ordersDB = orderMapper.getById(id);
+
+        // 校验订单是否存在，并且状态为3（待派送）
+        if (ordersDB == null || !ordersDB.getStatus().equals(Orders.CONFIRMED)){
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+
+        Orders orders = Orders.builder()
+                .id(id)
+                .status(Orders.DELIVERY_IN_PROGRESS)
+                .build();
+
         orderMapper.update(orders);
     }
 
