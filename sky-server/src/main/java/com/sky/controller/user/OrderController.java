@@ -81,4 +81,13 @@ public class OrderController {
         orderService.cancel(id);
         return Result.success();
     }
+
+    @PostMapping("/repetition/{id}")
+    @ApiOperation("再来一单")
+    public Result repetition(@PathVariable Long id){
+        // 其实就是将原订单中的商品重新加入到购物车中
+        log.info("再来一单");
+        orderService.repetition(id);
+        return Result.success();
+    }
 }
