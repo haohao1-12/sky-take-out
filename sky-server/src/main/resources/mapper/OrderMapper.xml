@@ -82,4 +82,15 @@
             </if>
         </where>
     </select>
+    <select id="getCountByMap" resultType="java.lang.Integer">
+        select count(id) from orders
+        <where>
+            <if test="date != null">
+                and order_time like concat(#{date},'%')
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
 </mapper>
