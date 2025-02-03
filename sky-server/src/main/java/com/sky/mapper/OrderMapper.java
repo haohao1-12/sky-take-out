@@ -95,4 +95,7 @@ public interface OrderMapper {
      * @return
      */
     List<GoodsSalesDTO> getSalesTop10(LocalDateTime begin, LocalDateTime end);
+
+    @Select("select count(id) from orders where order_time between #{begin} and #{end}")
+    Integer countAllOrders(LocalDateTime begin, LocalDateTime end);
 }
